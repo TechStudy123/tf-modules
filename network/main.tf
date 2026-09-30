@@ -7,9 +7,9 @@ resource "aws_vpc" "this" {
   cidr_block           = var.cidr
   enable_dns_hostnames = true
 
-  tags = {
+  tags = merge(var.tags, {
     Name = "${var.name}-vpc"
-  }
+  })
 }
 
 resource "aws_subnet" "public" {
@@ -18,17 +18,17 @@ resource "aws_subnet" "public" {
   availability_zone       = data.aws_availability_zones.available.names[0]
   map_public_ip_on_launch = true
 
-  tags = {
+  tags = merge(var.tags, {
     Name = "${var.name}-public"
-  }
+  })
 }
 
 resource "aws_internet_gateway" "this" {
   vpc_id = aws_vpc.this.id
 
-  tags = {
+  tags = merge(var.tags, {
     Name = "${var.name}-igw"
-  }
+  })
 }
 
 resource "aws_route_table" "public" {
@@ -39,9 +39,9 @@ resource "aws_route_table" "public" {
     gateway_id = aws_internet_gateway.this.id
   }
 
-  tags = {
+  tags = merge(var.tags, {
     Name = "${var.name}-public-rt"
-  }
+  })
 }
 
 resource "aws_route_table_association" "public" {
