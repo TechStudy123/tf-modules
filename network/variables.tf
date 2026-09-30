@@ -17,3 +17,9 @@ variable "cidr" {
     error_message = "cidr は 10.10.0.0/16 のような形で書いてください。"
   }
 }
+
+variable "tags" {
+  description = "すべてのリソースに付ける共通のタグ（v1.1.0 で追加。既定は空）"
+  type        = map(string)
+  default     = {}
+}
